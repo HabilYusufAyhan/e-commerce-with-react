@@ -67,29 +67,32 @@ const Products = () => {
 
   return (
     <div>
-      <div className="flex sticky top-[5.5rem] w-full justify-center">
-        <CategoryDropdown
-          setCategory={setCategory}
-          setPageNumber={setPageNumber}
-          category={category ? category : "All"}
-          setSkip={setSkip}
-        />
+      <div className="flex sticky top-[5.5rem] w-full justify-center flex-col items-center md:flex-col md:items-center lg:flex-col lg:items-center">
         <SearchInput handleChange={handleSearchChange} category={category} />
-        <Typing
-          setPageNumber={setPageNumber}
-          setSkip={setSkip}
-          setType={setType}
-          setOrder={setOrder}
-          currentType={type}
-        />
-        <Sorting
-          setPageNumber={setPageNumber}
-          setSkip={setSkip}
-          setType={setType}
-          setOrder={setOrder}
-          currentOrder={order}
-          currentType={type}
-        />
+        <div className="flex flex-wrap items-center justify-center">
+          <CategoryDropdown
+            setCategory={setCategory}
+            setPageNumber={setPageNumber}
+            category={category ? category : "All"}
+            setSkip={setSkip}
+          />
+
+          <Typing
+            setPageNumber={setPageNumber}
+            setSkip={setSkip}
+            setType={setType}
+            setOrder={setOrder}
+            currentType={type}
+          />
+          <Sorting
+            setPageNumber={setPageNumber}
+            setSkip={setSkip}
+            setType={setType}
+            setOrder={setOrder}
+            currentOrder={order}
+            currentType={type}
+          />
+        </div>
       </div>
 
       <ProductList products={products} />

@@ -12,9 +12,9 @@ const SearchInput = ({ handleChange, category }) => {
   });
   let all = "All";
   return (
-    <div className="w-fit flex justify-center  sticky top-[5.5rem] ">
+    <div className="w-fit flex justify-center  sticky top-[5.5rem]">
       <div
-        className={`flex items-center transition-all duration-500 pl-3 pr-3 rounded-bl-md  ${background}`}
+        className={`flex items-center transition-all duration-500 pl-3 pr-3 rounded-bl-md  ${background} pb-3`}
       >
         <input
           className={`pb-2 pt-2 border-2 border-red-800 rounded-md outline-none pl-2 pr-2 w-96`}

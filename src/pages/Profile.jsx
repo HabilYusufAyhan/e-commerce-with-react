@@ -1,41 +1,50 @@
 import React, { useEffect, useState } from "react";
 import axiosConfig, { setAuthorizationToken } from "../config/axiosConfig";
 import { useNavigate } from "react-router-dom";
+
 const Profile = () => {
-  const [user, setUser] = useState("");
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
+
   useEffect(() => {
-    let token = localStorage.getItem("ecommerce_training_token")
+    const token = localStorage.getItem("ecommerce_training_token")
       ? `Bearer ${localStorage.getItem("ecommerce_training_token")}`
       : "";
+
     if (!token) {
       navigate("/login");
     } else {
+      axiosConfig.defaults.headers.common["Authorization"] = token;
       axiosConfig
-        .get("user/me", {
-          Authorization: localStorage.getItem("ecommerce_training_token"),
-        })
+        .get("user/me")
         .then((response) => {
           if (!response.data) {
             navigate("/login");
-            return;
+          } else {
+            setUser(response.data);
+            setLoading(false);
           }
+        })
+        .catch((error) => {
+          console.error("Error fetching user data", error);
+          navigate("/login");
         });
     }
-  }, []);
-  axiosConfig
-    .get("user/me", {
-      Authorization: localStorage.getItem("ecommerce_training_token"),
-    })
-    .then((response) => {
-      setUser(response.data);
-      console.log(response.data);
-    });
+  }, [navigate]);
+
+  if (loading) {
+    return (
+      <div className="w-full h-full bg-red-400 fixed flex items-center justify-center">
+        <p className="text-white text-2xl">Loading...</p>
+      </div>
+    );
+  }
 
   return (
     <div className="w-full h-full bg-red-400 fixed flex items-start">
       <div className="flex justify-center w-full">
-        <div className="bg-red-800 mt-20  flex flex-col  justify-center items-center p-7 h-full rounded-md">
+        <div className="bg-red-800 mt-20 flex flex-col justify-center items-center p-7 h-full rounded-md">
           <div className="pb-5">
             <img
               className="rounded-full border-2 border-white bg-white"
