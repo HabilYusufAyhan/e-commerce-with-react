@@ -24,6 +24,7 @@ const Products = () => {
   const [category, setCategory] = useState("");
   const [type, setType] = useState("");
   const [order, setOrder] = useState("");
+  const [dropdownOpen, setDropdownOpen] = useState(false);
 
   useEffect(() => {
     const validateUser = async () => {
@@ -65,34 +66,46 @@ const Products = () => {
     setSkip(limit * (page - 1));
   };
 
+  const handleClick = () => {
+    setDropdownOpen(!dropdownOpen);
+  };
   return (
     <div>
       <div className="flex sticky top-[5.5rem] w-full justify-center flex-col items-center md:flex-col md:items-center lg:flex-col lg:items-center">
         <SearchInput handleChange={handleSearchChange} category={category} />
-        <div className="flex flex-wrap items-center justify-center">
-          <CategoryDropdown
-            setCategory={setCategory}
-            setPageNumber={setPageNumber}
-            category={category ? category : "All"}
-            setSkip={setSkip}
-          />
 
-          <Typing
-            setPageNumber={setPageNumber}
-            setSkip={setSkip}
-            setType={setType}
-            setOrder={setOrder}
-            currentType={type}
-          />
-          <Sorting
-            setPageNumber={setPageNumber}
-            setSkip={setSkip}
-            setType={setType}
-            setOrder={setOrder}
-            currentOrder={order}
-            currentType={type}
-          />
-        </div>
+        {dropdownOpen && (
+          <div className="flex flex-wrap items-center justify-center">
+            <CategoryDropdown
+              setCategory={setCategory}
+              setPageNumber={setPageNumber}
+              category={category ? category : "All"}
+              setSkip={setSkip}
+            />
+
+            <Typing
+              setPageNumber={setPageNumber}
+              setSkip={setSkip}
+              setType={setType}
+              setOrder={setOrder}
+              currentType={type}
+            />
+            <Sorting
+              setPageNumber={setPageNumber}
+              setSkip={setSkip}
+              setType={setType}
+              setOrder={setOrder}
+              currentOrder={order}
+              currentType={type}
+            />
+          </div>
+        )}
+        <i
+          onClick={handleClick}
+          className={`fa-solid ${
+            dropdownOpen ? "fa-caret-up" : "fa-caret-down"
+          }  text-red-800 text-3xl cursor-pointer`}
+        ></i>
       </div>
 
       <ProductList products={products} />

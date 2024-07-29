@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import axiosConfig, { setAuthorizationToken } from "../config/axiosConfig";
+import axiosConfig from "../config/axiosConfig";
 import { useNavigate } from "react-router-dom";
 
 const Profile = () => {
@@ -8,30 +8,39 @@ const Profile = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const token = localStorage.getItem("ecommerce_training_token")
-      ? `Bearer ${localStorage.getItem("ecommerce_training_token")}`
-      : "";
-
-    if (!token) {
-      navigate("/login");
-    } else {
-      axiosConfig.defaults.headers.common["Authorization"] = token;
-      axiosConfig
-        .get("user/me")
-        .then((response) => {
+    const fetchUser = async () => {
+      const token = localStorage.getItem("ecommerce_training_token");
+      if (!token) {
+        navigate("/login");
+      } else {
+        axiosConfig.defaults.headers.common[
+          "Authorization"
+        ] = `Bearer ${token}`;
+        try {
+          const response = await axiosConfig.get("user/me");
           if (!response.data) {
             navigate("/login");
           } else {
             setUser(response.data);
-            setLoading(false);
           }
-        })
-        .catch((error) => {
+        } catch (error) {
           console.error("Error fetching user data", error);
           navigate("/login");
-        });
-    }
+        } finally {
+          setLoading(false);
+        }
+      }
+    };
+
+    fetchUser();
   }, [navigate]);
+
+  useEffect(() => {
+    return () => {
+      setUser(null);
+      setLoading(true);
+    };
+  }, []);
 
   if (loading) {
     return (
@@ -48,7 +57,7 @@ const Profile = () => {
           <div className="pb-5">
             <img
               className="rounded-full border-2 border-white bg-white"
-              src={user.image}
+              src={user?.image}
               alt="profile picture"
             />
           </div>
@@ -56,26 +65,26 @@ const Profile = () => {
             <div className="flex items-center gap-5 text-white">
               <p>
                 <span className="font-semibold">First Name: </span>
-                {user.firstName}
+                {user?.firstName}
               </p>
               <p>
                 <span className="font-semibold">Last Name: </span>{" "}
-                {user.lastName}
+                {user?.lastName}
               </p>
             </div>
             <div className="flex items-center gap-1 text-white">
-              <span className="font-semibold"> Age:</span> {user.age}
+              <span className="font-semibold"> Age:</span> {user?.age}
             </div>
             <div className="flex items-center gap-1 text-white">
               <span className="font-semibold"> Date of Birth:</span>{" "}
-              {user.birthDate}
+              {user?.birthDate}
             </div>
             <div className="flex items-center gap-1 text-white">
-              <span className="font-semibold"> Email:</span> {user.email}
+              <span className="font-semibold"> Email:</span> {user?.email}
             </div>
             <div className="flex items-center gap-1 text-white">
               <span className="font-semibold"> Gender:</span>
-              {user.gender}
+              {user?.gender}
             </div>
           </div>
         </div>

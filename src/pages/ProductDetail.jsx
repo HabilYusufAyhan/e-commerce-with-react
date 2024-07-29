@@ -56,14 +56,14 @@ const ProductDetail = () => {
         <div className="flex gap-2">
           <div>
             <img
-              className="w-72 h-72 md:h-96 md:w-96 lg:h-96 lg:w-96 border-2 border-red-800"
+              className="object-contain w-72 h-72 md:h-96 md:w-96 lg:h-96 lg:w-96 border-2 border-red-800"
               src={product.images[imageArray[0]]}
               alt=""
             />
           </div>
           <div className="flex flex-col">
             <img
-              className="h-24 w-24 md:h-32 md:w-32 lg:h-32 lg:w-32 border-2 border-red-800 border-b-0 cursor-pointer"
+              className="object-contain h-24 w-24 md:h-32 md:w-32 lg:h-32 lg:w-32 border-2 border-red-800 border-b-0 cursor-pointer"
               onClick={() =>
                 product.images[imageArray[1]] ? imageChange(1) : null
               }
@@ -75,7 +75,7 @@ const ProductDetail = () => {
               alt=""
             />
             <img
-              className="h-24 w-24 md:h-32 md:w-32 lg:h-32 lg:w-32 border-2 border-red-800 border-b-0 cursor-pointer"
+              className="object-contain h-24 w-24 md:h-32 md:w-32 lg:h-32 lg:w-32 border-2 border-red-800 border-b-0 cursor-pointer"
               onClick={() =>
                 product.images[imageArray[2]] ? imageChange(2) : null
               }
@@ -87,7 +87,7 @@ const ProductDetail = () => {
               alt=""
             />
             <img
-              className="h-24 w-24 md:h-32 md:w-32 lg:h-32 lg:w-32 border-2 border-red-800 cursor-pointer"
+              className="object-contain h-24 w-24 md:h-32 md:w-32 lg:h-32 lg:w-32 border-2 border-red-800 cursor-pointer"
               onClick={() =>
                 product.images[imageArray[3]] ? imageChange(3) : null
               }

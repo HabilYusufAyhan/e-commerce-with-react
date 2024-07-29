@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axiosConfig, { setAuthorizationToken } from "../config/axiosConfig";
 import { useNavigate } from "react-router-dom";
+
 const Login = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -9,22 +10,22 @@ const Login = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    let token = localStorage.getItem("ecommerce_training_token")
-      ? `Bearer ${localStorage.getItem("ecommerce_training_token")}`
-      : "";
+    const token = localStorage.getItem("ecommerce_training_token");
     if (token) {
       axiosConfig
         .get("user/me", {
-          Authorization: localStorage.getItem("ecommerce_training_token"),
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
         })
         .then((response) => {
           if (response.data) {
             navigate("/products");
-            return;
           }
         });
     }
-  }, []);
+  }, [navigate]);
+
   const handleSubmit = (e) => {
     setWaitingStatus(true);
     e.preventDefault();
@@ -38,12 +39,9 @@ const Login = () => {
       .post("user/login", { username: username, password: password })
       .then((response) => {
         console.log(response.data);
-        if (response.status == 200) {
+        if (response.status === 200) {
           const token = response.data.token;
-          localStorage.setItem("ecommerce_training_token", token);
-          axiosConfig.defaults.headers.common[
-            "Authorization"
-          ] = `Bearer ${token}`;
+          setAuthorizationToken(token);
           navigate("/products");
         }
       })

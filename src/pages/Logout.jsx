@@ -1,17 +1,23 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { setAuthorizationToken } from "../config/axiosConfig";
 
 const Logout = () => {
   const navigate = useNavigate();
   const [text, setText] = useState(".");
+
   useEffect(() => {
-    localStorage.removeItem("ecommerce_training_token");
-    setInterval(() => {
-      setText(text + ".");
-    }, 1000);
-    setTimeout(() => {
-      navigate("/login");
-    }, 2000);
+    const performLogout = async () => {
+      setAuthorizationToken();
+      setInterval(() => {
+        setText((prevText) => prevText + ".");
+      }, 1000);
+      setTimeout(() => {
+        navigate("/login");
+      }, 2000);
+    };
+
+    performLogout();
   }, [navigate]);
 
   return (
